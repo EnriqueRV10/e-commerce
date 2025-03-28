@@ -1,41 +1,112 @@
-import Link from "next/link";
+"use client"
 
-const products = [
+import Link from "next/link";
+import Image from "next/image";
+import { SetStateAction, useState } from "react";
+
+const deco = [
   {
     id: 1,
     name: "Silla",
-    image: "/images/silla.jpg",
+    image: "/images/deco/silla.jpg",
     url: "/producto/silla",
     span: "col-span-2 row-span-2",
   },
   {
     id: 2,
     name: "Lámpara",
-    image: "/images/lampara.jpg",
+    image: "/images/deco/lampara.jpg",
     url: "/producto/lampara",
-    span: "",
+    span: "col-span-1",
   },
   {
     id: 3,
     name: "Alfombra",
-    image: "/images/alfombra.jpg",
+    image: "/images/deco/alfombra.png",
     url: "/producto/alfombra",
-    span: "",
+    span: "col-span-2 row-span-2",
   },
   {
     id: 4,
     name: "Mantas",
-    image: "/images/mantas.jpg",
+    image: "/images/deco/mantas.png",
     url: "/producto/mantas",
-    span: "row-span-2",
+    span: "row-span-2 col-span-1",
+  },
+];
+
+const cocina = [
+  {
+    id: 1,
+    name: "barra",
+    image: "/images/cocina/barra.jpg",
+    url: "/producto/silla",
+    span: "col-span-2 row-span-1",
+  },
+  {
+    id: 2,
+    name: "comedor1",
+    image: "/images/cocina/comedor1.jpg",
+    url: "/producto/lampara",
+    span: "col-span-1 row-span-2",
+  },
+  {
+    id: 3,
+    name: "comedor2",
+    image: "/images/cocina/comedor2.jpg",
+    url: "/producto/alfombra",
+    span: "col-span-1 row-span-2",
+  },
+  {
+    id: 4,
+    name: "mesa",
+    image: "/images/cocina/mesa.webp",
+    url: "/producto/cocina",
+    span: "row-span-2 col-span-1",
+  },
+];
+
+const carouselImages = [
+  {
+    id: "slide1",
+    src: "/images/cocina.jpg",
+    alt: "Cocina"
+  },
+  {
+    id: "slide2",
+    src: "/images/recamara.jpg",
+    alt: "Cocina 2"
+  },
+  {
+    id: "slide3",
+    src: "/images/sala.jpg",
+    alt: "Sala"
   },
 ];
 
 export default function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const goToSlide = (index: SetStateAction<number>) => {
+    setCurrentSlide(index);
+  };
+
+  const goToNextSlide = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    const nextSlide = (currentSlide + 1) % carouselImages.length;
+    setCurrentSlide(nextSlide);
+  };
+
+  const goToPrevSlide = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    const prevSlide = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
+    setCurrentSlide(prevSlide);
+  };
+
   return (
     <div className="mx-80">
-      <div className="flex flex-row h-100">
-        <div className="flex justify-center bg-[#7aa7a4] w-1/3 px-10 flex-col">
+      <div className="flex flex-row h-100 pt-16">
+        <div className="flex justify-center bg-[#7aa7a4] w-1/3 px-10 flex-col rounded-bl-sm">
           <h1 className="font-semibold text-white uppercase text-3xl">
             Donde tu hogar encuentra su estilo
           </h1>
@@ -43,87 +114,94 @@ export default function Home() {
             Encuentra tu mueble ideal
           </h2>
         </div>
-        <div className="carousel w-full">
-          <div id="slide1" className="carousel-item relative w-full">
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-              className="w-full"
-            />
-            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-              <a href="#slide4" className="btn btn-circle">
-                ❮
-              </a>
-              <a href="#slide2" className="btn btn-circle">
-                ❯
-              </a>
+
+        <div className="carousel w-full relative h-90overflow-hidden rounded-br-sm"> {/* Altura fija y overflow hidden */}
+          {carouselImages.map((image, index) => (
+            <div
+              key={image.id}
+              className={`carousel-item absolute w-full h-full transition-opacity duration-300 ${
+                index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
+            >
+              <div className="relative w-full h-full">
+                <Image 
+                  src={image.src} 
+                  alt={image.alt}
+                  fill
+                  className="object-cover" 
+                  priority
+                />
+              </div>
             </div>
+          ))}
+          <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-20">
+            <button onClick={goToPrevSlide} className="btn btn-circle">
+              ❮
+            </button>
+            <button onClick={goToNextSlide} className="btn btn-circle">
+              ❯
+            </button>
           </div>
-          <div id="slide2" className="carousel-item relative w-full">
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-              className="w-full"
-            />
-            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-              <a href="#slide1" className="btn btn-circle">
-                ❮
-              </a>
-              <a href="#slide3" className="btn btn-circle">
-                ❯
-              </a>
-            </div>
-          </div>
-          <div id="slide3" className="carousel-item relative w-full">
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-              className="w-full"
-            />
-            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-              <a href="#slide2" className="btn btn-circle">
-                ❮
-              </a>
-              <a href="#slide4" className="btn btn-circle">
-                ❯
-              </a>
-            </div>
-          </div>
-          <div id="slide4" className="carousel-item relative w-full">
-            <img
-              src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-              className="w-full"
-            />
-            <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-              <a href="#slide3" className="btn btn-circle">
-                ❮
-              </a>
-              <a href="#slide1" className="btn btn-circle">
-                ❯
-              </a>
-            </div>
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+            {carouselImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.preventDefault();
+                  goToSlide(index);
+                }}
+                className={`w-3 h-3 rounded-full ${
+                  index === currentSlide ? "bg-white" : "bg-white/50"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>
-      <div className="grid grid-flow-col grid-rows-3 gap-4 mt-6">
-        {/* Texto "Decoración" */}
-        <div className="bg-[#80a6ad] p-4 rounded-sm flex items-center justify-center text-white font-bold text-xl">
-          DECORACIÓN
+
+      {/* Resto del código para las secciones de decoración y cocina */}
+      <div className="grid grid-cols-[repeat(3,minmax(100px,1fr))] grid-rows-[repeat(3,minmax(100px,1fr))] gap-4 w-full h-[700px] pt-5">
+        <div className="bg-[#80a6ad] p-4 rounded-sm flex items-center justify-center text-white font-bold text-xl uppercase col-span-1">
+          decoración
         </div>
 
-        {/* Mapeo de productos */}
-        {products.map((product) => (
+        {deco.map((product) => (
           <Link
             key={product.id}
             href={product.url}
-            className={`bg-gray-200 p-4 rounded-sm flex items-center justify-center ${product.span}`}
+            className={`bg-gray-200 rounded-sm flex items-center justify-center ${product.span}`}
           >
-            <img
+            <Image
               src={product.image}
+              width={900}
+              height={900}
               alt={product.name}
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-cover rounded-md"
             />
           </Link>
         ))}
+      </div>
 
-        
+      <div className="grid grid-cols-[repeat(3,minmax(100px,1fr))] grid-rows-[repeat(3,minmax(100px,1fr))] gap-4 w-full h-[700px] pt-10">
+        <div className="bg-[#80a6ad] p-4 rounded-sm flex items-center justify-center text-white font-bold text-xl uppercase col-span-1 row-span-1">
+          cocina
+        </div>
+
+        {cocina.map((product) => (
+          <Link
+            key={product.id}
+            href={product.url}
+            className={`bg-gray-200 rounded-sm flex items-center justify-center ${product.span}`}
+          >
+            <Image
+              src={product.image}
+              width={900}
+              height={900}
+              alt={product.name}
+              className="w-full h-full object-cover rounded-md"
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );
