@@ -115,7 +115,7 @@ export default function Home() {
           </h2>
         </div>
 
-        <div className="carousel w-full relative h-90overflow-hidden rounded-br-sm"> {/* Altura fija y overflow hidden */}
+        <div className="carousel w-full relative h-90overflow-hidden rounded-br-sm">
           {carouselImages.map((image, index) => (
             <div
               key={image.id}
@@ -159,7 +159,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Resto del código para las secciones de decoración y cocina */}
       <div className="grid grid-cols-[repeat(3,minmax(100px,1fr))] grid-rows-[repeat(3,minmax(100px,1fr))] gap-4 w-full h-[700px] pt-5">
         <div className="bg-[#80a6ad] p-4 rounded-sm flex items-center justify-center text-white font-bold text-xl uppercase col-span-1">
           decoración
@@ -169,15 +168,17 @@ export default function Home() {
           <Link
             key={product.id}
             href={product.url}
-            className={`bg-gray-200 rounded-sm flex items-center justify-center ${product.span}`}
+            className={`rounded-xl ${product.span} group overflow-hidden`}
           >
-            <Image
-              src={product.image}
-              width={900}
-              height={900}
-              alt={product.name}
-              className="w-full h-full object-cover rounded-md"
-            />
+            <div className="relative w-full h-full overflow-hidden rounded-xl">
+              <Image
+                src={product.image}
+                width={900}
+                height={900}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+              />
+            </div>
           </Link>
         ))}
       </div>
@@ -191,15 +192,17 @@ export default function Home() {
           <Link
             key={product.id}
             href={product.url}
-            className={`bg-gray-200 rounded-sm flex items-center justify-center ${product.span}`}
+            className={`rounded-xl ${product.span} group overflow-hidden`}
           >
-            <Image
-              src={product.image}
-              width={900}
-              height={900}
-              alt={product.name}
-              className="w-full h-full object-cover rounded-md"
-            />
+            <div className="relative w-full h-full overflow-hidden rounded-xl">
+              <Image
+                src={product.image}
+                width={900}
+                height={900}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+              />
+            </div>
           </Link>
         ))}
       </div>
